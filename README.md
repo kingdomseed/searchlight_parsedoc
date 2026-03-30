@@ -13,8 +13,7 @@ Orama's in-memory search and indexing model.
 Companion core package:
 
 - [`searchlight`](https://pub.dev/packages/searchlight) provides the core
-  indexing, querying, persistence, and highlighting runtime this package builds
-  on.
+  indexing, querying, and persistence runtime this package builds on.
 
 It turns HTML and Markdown into flat Searchlight-ready records through the same
 core helper surface Orama exposes:
@@ -228,6 +227,13 @@ Dart-oriented parser/model APIs:
 These APIs are additive. They are useful for Dart apps, but they are not part
 of the strict Orama Parsedoc helper contract.
 
+## Combining With `searchlight_highlight`
+
+Use `searchlight_parsedoc` to extract Markdown and HTML into Searchlight-ready
+records, then pair it with
+[`searchlight_highlight`](https://pub.dev/packages/searchlight_highlight) when
+you want post-search snippets, highlighted match ranges, or rendered excerpts.
+
 ## Example App
 
 The repo includes a Flutter desktop validation app under
@@ -241,6 +247,8 @@ That app is intentionally wired through the public parity surface:
 - it loads a folder of live `.md` and `.html` files
 - it uses `populate(...)` plus `parseFile(...)`
 - it searches the populated Searchlight database
+- it can be paired with `searchlight_highlight` after search for snippets or
+  highlighted match ranges
 - it lets you inspect extracted record paths alongside the source preview
 
 ## Additional Information
