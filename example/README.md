@@ -1,7 +1,7 @@
 # searchlight_parsedoc example
 
-This Flutter example mirrors the base Searchlight example flow, but it routes
-Markdown ingestion through `searchlight_parsedoc`.
+This Flutter example validates the public Orama-parity helper flow in
+`searchlight_parsedoc`.
 
 Dependency split:
 
@@ -11,10 +11,12 @@ Dependency split:
 ## What it proves
 
 - the app depends on published `searchlight` from pub.dev
-- parsing happens through local `searchlight_parsedoc` from a path dependency
+- ingestion happens through local `searchlight_parsedoc` from a path dependency
 - indexing and querying happen through Searchlight
-- a user can point the app at a Markdown folder and validate the parsed output
-- parsing or duplicate-ID issues collected during loading are surfaced in the UI
+- a user can point the app at a folder of `.md` and `.html` files
+- the app uses `populate(...)` to build the Searchlight database
+- the app uses `parseFile(...)` to derive the records shown in the UI
+- load issues collected during scanning are surfaced in the UI
 
 ## Run
 
@@ -35,20 +37,22 @@ configured in this repo.
 ## Use
 
 1. Click `Choose Folder`.
-2. Select a folder containing `.md` files.
+2. Select a folder containing `.md` or `.html` files.
 3. Wait for indexing to finish.
 4. With an empty query, review the alphabetical browse-all list.
-5. Search for a term from a heading or body paragraph.
+5. Search for a term from an extracted heading or paragraph record.
 6. Select a result to inspect:
-   - parsed title
-   - parsed body text
+   - derived display title
+   - extracted content
+   - parsed record path
    - source path
-   - rendered markdown preview
-7. Check the issue count shown above the results list. That count includes
-   parse failures and duplicate-ID collisions collected during loading.
+   - markdown render or raw source preview
+7. Check the issue count shown above the results list. That count covers load
+   failures collected during scanning.
 
 ## Why this example matters
 
-The example is not using copied Markdown extraction logic. Its folder loader
-parses live files with `parseMarkdownFile(...)`, then indexes those mapped
-records through published Searchlight.
+The example is not using copied extraction logic. Its folder loader reads live
+files, uses `populate(...)` to insert Orama-style Parsedoc records into a real
+Searchlight database, and uses `parseFile(...)` to derive the displayed record
+details from the same public helper surface.

@@ -3,72 +3,49 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kingdomseed/searchlight_parsedoc)
 [![Repository](https://img.shields.io/badge/repository-kingdomseed%2Fsearchlight__parsedoc-24292f)](https://github.com/kingdomseed/searchlight_parsedoc)
 
-Searchlight Parsedoc is a pure Dart companion package for Searchlight, the
-independent Dart reimplementation of Orama's in-memory search and indexing
-model. It parses Markdown and HTML into extracted documents and record maps for
-Dart and Flutter apps.
+Searchlight Parsedoc is a pure Dart reimplementation of Orama's Parsedoc
+helper package shape for Searchlight, the independent Dart reimplementation of
+Orama's in-memory search and indexing model.
 
-Searchlight Parsedoc is especially useful when your app already has Markdown or
-HTML available as strings or local files, and you want a reusable conversion
-step before indexing that content with Searchlight.
+It turns HTML and Markdown into flat Searchlight-ready records through the same
+core helper surface Orama exposes:
+
+- `defaultHtmlSchema`
+- `parseFile(...)`
+- `populate(...)`
+- `populateFromGlob(...)`
 
 ## Status
 
-`searchlight_parsedoc` is currently a parser-first companion package for
-Searchlight. It is not yet at strict Orama Parsedoc parity.
+`searchlight_parsedoc` matches the audited Orama Parsedoc helper contract:
 
-Today it includes parsing and mapping primitives:
-
-Current API includes:
-
-- `ParsedFormat`
-- `ParsedBlock`
-- `ParsedDocument`
-- `parseMarkdownString(...)`
-- `parseHtmlString(...)`
-- `parseMarkdownFile(...)`
-- `parseHtmlFile(...)`
-- `parseFile(...)`
-- merge strategies: `merge`, `split`, `both`
-- transform callback support through `ParseOptions`
-- `SearchlightDocumentRecordMapper`
-- `SearchlightBlockRecordMapper`
-
-It does not currently include:
-
-- Orama-style `populate(...)`
-- Orama-style `populateFromGlob(...)`
 - `defaultHtmlSchema`
-- PDF parsing
-- recursive folder walking
-- glob APIs
-- front matter extraction
-- remote download helpers
-- Searchlight database creation
-- automatic insertion into a Searchlight index
+- `parseFile(data, fileType, options: ...)`
+- `populate(db, data, fileType, options: ...)`
+- `populateFromGlob(db, pattern, options: ...)`
+- `MergeStrategy`
+- `NodeContent`
+- `TransformFn`
+- `PopulateFnContext`
 
-## Scope
+Important package-shape note:
 
-`searchlight_parsedoc` is intentionally focused. It stops at parsed document
-models and opinionated record maps today. The next parity phase will add the
-Orama-style population APIs before any Searchlight-specific improvements.
+- Orama publishes Parsedoc as `@orama/plugin-parsedoc`
+- the audited Orama source is helper-driven, not a create-time plugin object
+- Searchlight Parsedoc matches that audited helper shape
 
 ## Platform Support
 
-`searchlight_parsedoc` is a pure Dart package. String parsing is platform
-agnostic, but the current top-level library also exports `dart:io` file
-helpers. Import `package:searchlight_parsedoc/searchlight_parsedoc.dart` in
-Dart or Flutter VM targets for now. Separate web-safe exports are not
-available yet.
+`searchlight_parsedoc` is a pure Dart package, but the current top-level import
+also exports `dart:io` helpers such as `populateFromGlob(...)`,
+`parseMarkdownFile(...)`, `parseHtmlFile(...)`, and `parseLocalFile(...)`.
 
-## Start Here
+That means:
 
-- Use the string parsers when your app has already loaded Markdown or HTML
-  content.
-- Use the file parsers in Dart VM code when you want to read local `.md`,
-  `.markdown`, `.html`, or `.htm` files directly.
-- Open [example/README.md](example/README.md) for the Flutter desktop
-  validation app.
+- import `package:searchlight_parsedoc/searchlight_parsedoc.dart` only in Dart
+  or Flutter VM targets for now
+- `parseFile(...)` and `populate(...)` accept `String` or `List<int>` input
+- separate web-safe exports are not available yet
 
 ## Installation
 
@@ -81,101 +58,184 @@ flutter pub add searchlight_parsedoc
 
 ## Quick Start
 
+Create a Searchlight database that matches the default searchable Parsedoc
+fields:
+
 ```dart
+import 'package:searchlight/searchlight.dart';
 import 'package:searchlight_parsedoc/searchlight_parsedoc.dart';
 
-Future<void> main() async {
-  final doc = await parseMarkdownString('''
-# Ember Lance
-
-A focused lance of heat.
-''');
-
-  print(doc.title);
-  print(doc.bodyText);
-}
+final db = Searchlight.create(
+  schema: Schema({
+    'type': const TypedField(SchemaType.string),
+    'content': const TypedField(SchemaType.string),
+    'path': const TypedField(SchemaType.string),
+  }),
+);
 ```
 
-Map a parsed document into a Searchlight-ready record using the default
-document-level field layout:
+Populate it from Markdown or HTML content:
 
 ```dart
+import 'dart:convert';
+
+import 'package:searchlight/searchlight.dart';
 import 'package:searchlight_parsedoc/searchlight_parsedoc.dart';
 
 Future<void> main() async {
-  final doc = await parseMarkdownFile('docs/ember.md');
-
-  final record = const SearchlightDocumentRecordMapper().map(
-    id: 'ember-lance',
-    document: doc,
+  final db = Searchlight.create(
+    schema: Schema({
+      'type': const TypedField(SchemaType.string),
+      'content': const TypedField(SchemaType.string),
+      'path': const TypedField(SchemaType.string),
+    }),
   );
 
-  print(record);
+  final ids = await populate(
+    db,
+    utf8.encode('# Ember Lance\n\nA focused lance of heat.'),
+    'md',
+  );
+
+  final result = db.search(
+    term: 'ember',
+    properties: const ['content'],
+  );
+
+  print(ids);
+  print(result.count);
+
+  await db.dispose();
 }
 ```
 
-The default document mapper emits this shape:
+Inspect extracted records without inserting them:
+
+```dart
+import 'dart:convert';
+
+import 'package:searchlight_parsedoc/searchlight_parsedoc.dart';
+
+Future<void> main() async {
+  final records = await parseFile(
+    utf8.encode('<p>First</p><p>Second</p>'),
+    'html',
+  );
+
+  print(records);
+}
+```
+
+The extracted record shape matches the audited Orama helper contract:
 
 ```dart
 {
-  'id': 'ember-lance',
-  'title': 'Ember Lance',
-  'content': 'A focused lance of heat.',
-  'sourcePath': 'docs/ember.md',
-  'format': 'markdown',
+  'type': 'p',
+  'content': 'First Second',
+  'path': 'root[0].div[0]',
+  'properties': <String, Object?>{},
 }
 ```
 
-The default block mapper emits one record per extracted block:
+`properties` is optional record metadata. It is not part of
+`defaultHtmlSchema`, and Searchlight does not need it declared in the schema
+unless you choose to model it yourself outside the default helper path.
+
+## Merge Strategies
+
+Parsedoc exposes the same merge modes as Orama:
+
+- `MergeStrategy.merge`: merge consecutive compatible sibling text nodes
+- `MergeStrategy.split`: emit one record per text node
+- `MergeStrategy.both`: emit split records plus a merged companion record
+
+## Transform Contract
+
+The transform contract matches the audited Orama helper payload:
 
 ```dart
-{
-  'id': 'ember-lance#0',
-  'documentId': 'ember-lance',
-  'sourcePath': 'docs/ember.md',
-  'format': 'markdown',
-  'tag': 'p',
-  'content': 'A focused lance of heat.',
-  'path': 'root.body[0]',
-  'attributes': <String, String>{},
+final options = PopulateOptions(
+  transformFn: (node, context) {
+    return node.copyWith(
+      additionalProperties: {'section': context['section']},
+    );
+  },
+  context: const {'section': 'intro'},
+);
+```
+
+`NodeContent` exposes:
+
+- `tag`
+- `raw`
+- `content`
+- `properties`
+- `additionalProperties`
+
+## Folder Population
+
+For VM targets, `populateFromGlob(...)` mirrors Orama's folder-ingestion
+helper:
+
+```dart
+import 'package:searchlight/searchlight.dart';
+import 'package:searchlight_parsedoc/searchlight_parsedoc.dart';
+
+Future<void> main() async {
+  final db = Searchlight.create(
+    schema: Schema({
+      'type': const TypedField(SchemaType.string),
+      'content': const TypedField(SchemaType.string),
+      'path': const TypedField(SchemaType.string),
+    }),
+  );
+
+  await populateFromGlob(db, 'content/*');
+  await db.dispose();
 }
 ```
 
-These are opinionated `Map<String, Object?>` helpers. They do not create a
-Searchlight database for you, and your Searchlight schema must declare the
-fields you plan to index from those maps.
+Audited parity note:
 
-For the default document mapper, that usually means a schema along these lines:
+- the current helper supports `.md` and `.html`
+- `.markdown` and `.htm` are not part of the audited Orama helper contract
 
-```dart
-final schema = {
-  'id': 'string',
-  'title': 'string',
-  'content': 'string',
-  'sourcePath': 'string',
-  'format': 'string',
-};
-```
+## Additive Dart APIs
 
-## Example app
+Beyond the audited Orama helper surface, this package also keeps additive
+Dart-oriented parser/model APIs:
 
-The repo includes a Flutter desktop example app under
+- `ParsedFormat`
+- `ParsedBlock`
+- `ParsedDocument`
+- `parseMarkdownString(...)`
+- `parseHtmlString(...)`
+- `parseMarkdownFile(...)`
+- `parseHtmlFile(...)`
+- `parseLocalFile(...)`
+- `SearchlightDocumentRecordMapper`
+- `SearchlightBlockRecordMapper`
+
+These APIs are additive. They are useful for Dart apps, but they are not part
+of the strict Orama Parsedoc helper contract.
+
+## Example App
+
+The repo includes a Flutter desktop validation app under
 [`example/`](example/README.md).
 
-That app is intentionally a real integration proof:
+That app is intentionally wired through the public parity surface:
 
 - it depends on published `searchlight` from pub.dev
 - it depends on local `searchlight_parsedoc` by path
-- it loads a folder of Markdown files
-- it parses those files through `searchlight_parsedoc`
-- it indexes the resulting records with Searchlight
-- it lets you search and inspect the parsed output next to a rendered markdown
-  preview
-- the current checked-in app targets macOS in this repo
+- it loads a folder of live `.md` and `.html` files
+- it uses `populate(...)` plus `parseFile(...)`
+- it searches the populated Searchlight database
+- it lets you inspect extracted record paths alongside the source preview
 
-## Additional information
+## Additional Information
 
 This package follows Searchlight's architecture split:
 
 - `searchlight` core owns indexing and search
-- companion packages own source-format extraction
+- companion packages own source-format extraction and ingestion helpers

@@ -150,18 +150,22 @@ Supported audited extensions in practice:
 The helper uses a `FileType` union of `'html' | 'md'`. There is no audited
 support for `.markdown` or `.htm` in `populateFromFile(...)`.
 
-## Parity Gap Against Current Dart Package
+## Parity Status Against Current Dart Package
 
-Current Searchlight Parsedoc still differs materially:
+The original gaps identified in this audit were:
 
 - no `populate(...)`
 - no `populateFromGlob(...)`
 - no `defaultHtmlSchema`
 - no parity `TransformFn` / `NodeContent` surface
-- current package centers parsed-document models rather than Orama-style flat
+- current package centered parsed-document models rather than Orama-style flat
   record elements
-- current README still describes the package primarily as a parser/mapping
-  layer rather than an index-population package
+- current README described the package primarily as a parser/mapping layer
+
+Those audited helper-surface gaps are now implemented in Searchlight Parsedoc.
+
+The remaining non-parity questions are additive-package questions, not missing
+core helper contract pieces.
 
 ## Reserved Questions
 

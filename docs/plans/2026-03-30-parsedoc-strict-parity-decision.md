@@ -29,8 +29,10 @@ The current package provides:
 - record mappers for Searchlight
 - file helpers for VM use
 
-The current package does not yet prove strict parity because it does not yet
-match the full Orama Parsedoc package shape or integration model.
+The audited helper-package parity work is now implemented.
+
+Additive Dart-only parser/model helpers still exist, but they are documented as
+additive rather than part of the strict Orama helper contract.
 
 ## Audited Orama Package Shape
 
