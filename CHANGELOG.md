@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-30
+
+### Changed
+
+- Updated package docs to explain how `searchlight_parsedoc` combines with
+  `searchlight_highlight` for post-search snippets and highlighted matches.
+- Updated the companion dependency range for `searchlight` `^0.2.0`.
+- Aligned the package family version with `searchlight` and
+  `searchlight_highlight`.
+
 ## [0.1.0] - 2026-03-30
 
 ### Added
