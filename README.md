@@ -30,6 +30,8 @@ Implemented:
 - transform callback support
 - `SearchlightDocumentRecordMapper`
 - `SearchlightBlockRecordMapper`
+- Flutter example app that depends on published `searchlight`
+- folder-driven Markdown parsing demo through `searchlight_parsedoc`
 
 Planned next:
 
@@ -84,6 +86,21 @@ Future<void> main() async {
   print(record);
 }
 ```
+
+## Example app
+
+The repo includes a Flutter desktop example app under
+[`example/`](example/README.md).
+
+That app is intentionally a real integration proof:
+
+- it depends on published `searchlight` from pub.dev
+- it depends on local `searchlight_parsedoc`
+- it loads a folder of Markdown files
+- it parses those files through `searchlight_parsedoc`
+- it indexes the resulting records with Searchlight
+- it lets you search and inspect the parsed output next to a rendered markdown
+  preview
 
 ## Additional information
 
