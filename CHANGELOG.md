@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-03-30
+
+### Changed
+
+- Simplified companion-package documentation and removed extraneous wording
+  from the package relationship notes.
+- Updated the companion dependency range for `searchlight` `^0.2.1`.
+
 ## [0.2.0] - 2026-03-30
 
 ### Changed
