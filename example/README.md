@@ -5,7 +5,7 @@ This Flutter example validates the public Orama-parity helper flow in
 
 Dependency split:
 
-- published `searchlight` from pub.dev
+- published [`searchlight`](https://pub.dev/packages/searchlight) from pub.dev
 - local `searchlight_parsedoc` from `path: ..`
 
 ## What it proves
@@ -13,6 +13,8 @@ Dependency split:
 - the app depends on published `searchlight` from pub.dev
 - ingestion happens through local `searchlight_parsedoc` from a path dependency
 - indexing and querying happen through Searchlight
+- package users can find the core engine repo at
+  <https://github.com/kingdomseed/searchlight>
 - a user can point the app at a folder of `.md` and `.html` files
 - the app uses `populate(...)` to build the Searchlight database
 - the app uses `parseFile(...)` to derive the records shown in the UI
@@ -56,3 +58,8 @@ The example is not using copied extraction logic. Its folder loader reads live
 files, uses `populate(...)` to insert Orama-style Parsedoc records into a real
 Searchlight database, and uses `parseFile(...)` to derive the displayed record
 details from the same public helper surface.
+
+For consumers, the package pair is:
+
+- `searchlight`: <https://pub.dev/packages/searchlight>
+- `searchlight_parsedoc`: <https://pub.dev/packages/searchlight_parsedoc>

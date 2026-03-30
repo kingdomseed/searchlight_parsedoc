@@ -1,11 +1,23 @@
 # Searchlight Parsedoc
 
+[![Pub Version](https://img.shields.io/pub/v/searchlight_parsedoc)](https://pub.dev/packages/searchlight_parsedoc)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kingdomseed/searchlight_parsedoc)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Repository](https://img.shields.io/badge/repository-kingdomseed%2Fsearchlight__parsedoc-24292f)](https://github.com/kingdomseed/searchlight_parsedoc)
+[![Publisher](https://img.shields.io/badge/publisher-jasonholtdigital.com-2b7cff)](https://pub.dev/publishers/jasonholtdigital.com)
 
 Searchlight Parsedoc is a pure Dart reimplementation of Orama's Parsedoc
 helper package shape for Searchlight, the independent Dart reimplementation of
 Orama's in-memory search and indexing model.
+
+Package links:
+
+- `searchlight` on pub.dev: <https://pub.dev/packages/searchlight>
+- `searchlight` on GitHub: <https://github.com/kingdomseed/searchlight>
+- `searchlight_parsedoc` on pub.dev:
+  <https://pub.dev/packages/searchlight_parsedoc>
+- `searchlight_parsedoc` on GitHub:
+  <https://github.com/kingdomseed/searchlight_parsedoc>
 
 It turns HTML and Markdown into flat Searchlight-ready records through the same
 core helper surface Orama exposes:
@@ -226,7 +238,8 @@ The repo includes a Flutter desktop validation app under
 
 That app is intentionally wired through the public parity surface:
 
-- it depends on published `searchlight` from pub.dev
+- it depends on published [`searchlight`](https://pub.dev/packages/searchlight)
+  from pub.dev
 - it depends on local `searchlight_parsedoc` by path
 - it loads a folder of live `.md` and `.html` files
 - it uses `populate(...)` plus `parseFile(...)`
