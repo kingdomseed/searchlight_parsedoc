@@ -15,6 +15,20 @@ class ParsedBlock {
   final String text;
   final String path;
   final Map<String, String> attributes;
+
+  ParsedBlock copyWith({
+    String? tag,
+    String? text,
+    String? path,
+    Map<String, String>? attributes,
+  }) {
+    return ParsedBlock(
+      tag: tag ?? this.tag,
+      text: text ?? this.text,
+      path: path ?? this.path,
+      attributes: attributes ?? this.attributes,
+    );
+  }
 }
 
 class ParsedDocument {
