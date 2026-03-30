@@ -1,3 +1,5 @@
+import 'populate_options.dart';
+
 const defaultHtmlSchema = <String, String>{
   'type': 'string',
   'content': 'string',
@@ -8,7 +10,7 @@ Future<List<String>> populate(
   Object db,
   Object data,
   String fileType, {
-  Object? options,
+  PopulateOptions options = const PopulateOptions(),
 }) async {
   throw UnimplementedError(
     'populate() is reserved until strict Orama parity implementation lands.',
@@ -18,7 +20,7 @@ Future<List<String>> populate(
 Future<void> populateFromGlob(
   Object db,
   String pattern, {
-  Object? options,
+  PopulateOptions options = const PopulateOptions(),
 }) async {
   throw UnimplementedError(
     'populateFromGlob() is reserved until strict Orama parity implementation lands.',
