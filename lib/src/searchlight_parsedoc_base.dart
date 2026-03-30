@@ -2,6 +2,7 @@ import 'models/parsed_node.dart';
 
 export 'models/parsed_document.dart';
 export 'models/parsed_node.dart';
+export 'api/populate.dart';
 export 'io/file_parsers.dart';
 export 'mappers/searchlight_record_mapper.dart';
 export 'parsers/html_parser.dart';
