@@ -8,15 +8,15 @@
 
 Searchlight Parsedoc is a pure Dart reimplementation of Orama's Parsedoc
 helper package shape for Searchlight, the independent Dart reimplementation of
-Orama's in-memory search and indexing model.
+an in-memory search and indexing model.
 
 Companion core package:
 
 - [`searchlight`](https://pub.dev/packages/searchlight) provides the core
   indexing, querying, and persistence runtime this package builds on.
 
-It turns HTML and Markdown into flat Searchlight-ready records through the same
-core helper surface Orama exposes:
+It turns HTML and Markdown into flat Searchlight-ready records through this
+helper surface:
 
 - `defaultHtmlSchema`
 - `parseFile(...)`
@@ -25,7 +25,7 @@ core helper surface Orama exposes:
 
 ## Status
 
-`searchlight_parsedoc` matches the audited Orama Parsedoc helper contract:
+`searchlight_parsedoc` currently exposes this documented helper contract:
 
 - `defaultHtmlSchema`
 - `parseFile(data, fileType, options: ...)`
@@ -38,9 +38,8 @@ core helper surface Orama exposes:
 
 Important package-shape note:
 
-- Orama publishes Parsedoc as `@orama/plugin-parsedoc`
-- the audited Orama source is helper-driven, not a create-time plugin object
-- Searchlight Parsedoc matches that audited helper shape
+- the package is helper-driven, not a create-time plugin object
+- the public package surface stays intentionally narrow
 
 ## Platform Support
 
@@ -134,7 +133,7 @@ Future<void> main() async {
 }
 ```
 
-The extracted record shape matches the audited Orama helper contract:
+The extracted record shape follows the current helper contract:
 
 ```dart
 {
@@ -151,7 +150,7 @@ unless you choose to model it yourself outside the default helper path.
 
 ## Merge Strategies
 
-Parsedoc exposes the same merge modes as Orama:
+Parsedoc exposes these merge modes:
 
 - `MergeStrategy.merge`: merge consecutive compatible sibling text nodes
 - `MergeStrategy.split`: emit one record per text node
@@ -159,7 +158,7 @@ Parsedoc exposes the same merge modes as Orama:
 
 ## Transform Contract
 
-The transform contract matches the audited Orama helper payload:
+The transform contract looks like this:
 
 ```dart
 final options = PopulateOptions(
@@ -182,8 +181,7 @@ final options = PopulateOptions(
 
 ## Folder Population
 
-For VM targets, `populateFromGlob(...)` mirrors Orama's folder-ingestion
-helper:
+For VM targets, `populateFromGlob(...)` provides folder-ingestion helpers:
 
 ```dart
 import 'package:searchlight/searchlight.dart';
@@ -203,15 +201,15 @@ Future<void> main() async {
 }
 ```
 
-Audited parity note:
+Current note:
 
 - the current helper supports `.md` and `.html`
-- `.markdown` and `.htm` are not part of the audited Orama helper contract
+- `.markdown` and `.htm` are not part of the current documented helper surface
 
 ## Additive Dart APIs
 
-Beyond the audited Orama helper surface, this package also keeps additive
-Dart-oriented parser/model APIs:
+Beyond the core helper surface, this package also keeps additive Dart-oriented
+parser/model APIs:
 
 - `ParsedFormat`
 - `ParsedBlock`
@@ -225,7 +223,7 @@ Dart-oriented parser/model APIs:
 - `SearchlightBlockRecordMapper`
 
 These APIs are additive. They are useful for Dart apps, but they are not part
-of the strict Orama Parsedoc helper contract.
+of the narrow helper contract described above.
 
 ## Combining With `searchlight_highlight`
 
@@ -239,7 +237,7 @@ you want post-search snippets, highlighted match ranges, or rendered excerpts.
 The repo includes a Flutter desktop validation app under
 [`example/`](example/README.md).
 
-That app is intentionally wired through the public parity surface:
+That app is intentionally wired through the public package surface:
 
 - it depends on published [`searchlight`](https://pub.dev/packages/searchlight)
   from pub.dev
@@ -257,3 +255,9 @@ This package follows Searchlight's architecture split:
 
 - `searchlight` core owns indexing and search
 - companion packages own source-format extraction and ingestion helpers
+
+## License And Attribution
+
+Searchlight Parsedoc is an independent pure Dart reimplementation of Orama's
+Parsedoc package shape. It is not affiliated with or endorsed by the Orama
+project.

@@ -1,6 +1,6 @@
 # searchlight_parsedoc example
 
-This Flutter example validates the public Orama-parity helper flow in
+This Flutter example validates the public helper flow in
 `searchlight_parsedoc`.
 
 Dependency split:
@@ -55,9 +55,9 @@ configured in this repo.
 ## Why this example matters
 
 The example is not using copied extraction logic. Its folder loader reads live
-files, uses `populate(...)` to insert Orama-style Parsedoc records into a real
-Searchlight database, and uses `parseFile(...)` to derive the displayed record
-details from the same public helper surface.
+files, uses `populate(...)` to insert Parsedoc records into a real Searchlight
+database, and uses `parseFile(...)` to derive the displayed record details from
+the same public helper surface.
 
 For consumers, the package pair is:
 

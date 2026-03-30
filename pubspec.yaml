@@ -1,5 +1,5 @@
 name: searchlight_parsedoc
-description: HTML and Markdown population helpers for Searchlight with Orama-style parsing and VM file support.
+description: HTML and Markdown population helpers for Searchlight with VM file support.
 version: 0.2.1
 homepage: https://github.com/kingdomseed/searchlight_parsedoc
 repository: https://github.com/kingdomseed/searchlight_parsedoc
