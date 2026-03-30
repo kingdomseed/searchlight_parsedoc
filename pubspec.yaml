@@ -1,0 +1,16 @@
+name: searchlight_parsedoc
+description: Markdown and HTML parsing companion package for Searchlight.
+version: 0.1.0-dev
+repository: https://github.com/kingdomseed/searchlight_parsedoc
+
+environment:
+  sdk: ^3.11.4
+
+# Add regular dependencies here.
+dependencies:
+  html: ^0.15.6
+  markdown: ^7.3.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6
