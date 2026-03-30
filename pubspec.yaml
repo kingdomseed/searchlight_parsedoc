@@ -1,5 +1,5 @@
 name: searchlight_parsedoc
-description: Markdown and HTML parsing companion package for Searchlight with VM file helpers.
+description: Markdown and HTML parsed-document and record-mapper companion for Searchlight with VM file helpers.
 version: 0.1.0-dev
 repository: https://github.com/kingdomseed/searchlight_parsedoc
 

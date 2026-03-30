@@ -2,6 +2,10 @@
 
 `searchlight_parsedoc` is a pure Dart companion package for `searchlight`.
 
+The current public package import is VM-oriented. It exports `dart:io` file
+helpers alongside the string parsers, so web-safe split exports are not
+implemented yet.
+
 It parses Markdown and HTML into normalized extracted blocks that can then be
 mapped into Searchlight records. The package is intentionally narrow:
 
@@ -49,7 +53,8 @@ The package stops at parsed document models and plain record maps.
 
 - The parsing logic itself is string-first.
 - The current top-level library also exports VM file helpers from `dart:io`.
-- That means the package is currently VM-oriented at the public import level.
+- Import `package:searchlight_parsedoc/searchlight_parsedoc.dart` only in
+  Dart/Flutter VM targets for now.
 - Web-safe split exports are not implemented yet in this repo.
 
 ## Usage
@@ -85,6 +90,49 @@ Future<void> main() async {
 
   print(record);
 }
+```
+
+The default document mapper emits this shape:
+
+```dart
+{
+  'id': 'ember-lance',
+  'title': 'Ember Lance',
+  'content': 'A focused lance of heat.',
+  'sourcePath': 'docs/ember.md',
+  'format': 'markdown',
+}
+```
+
+The default block mapper emits one record per extracted block:
+
+```dart
+{
+  'id': 'ember-lance#0',
+  'documentId': 'ember-lance',
+  'sourcePath': 'docs/ember.md',
+  'format': 'markdown',
+  'tag': 'p',
+  'content': 'A focused lance of heat.',
+  'path': 'root.body[0]',
+  'attributes': <String, String>{},
+}
+```
+
+These are opinionated `Map<String, Object?>` helpers. They do not create a
+Searchlight database for you, and your Searchlight schema must declare the
+fields you plan to index from those maps.
+
+For the default document mapper, that usually means a schema along these lines:
+
+```dart
+final schema = {
+  'id': 'string',
+  'title': 'string',
+  'content': 'string',
+  'sourcePath': 'string',
+  'format': 'string',
+};
 ```
 
 ## Example app
