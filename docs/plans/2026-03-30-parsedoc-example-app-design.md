@@ -145,10 +145,13 @@ record shape.
 
 ## Why This Design
 
-This is the simplest honest proof of plugin behavior:
+This is the simplest honest proof of parsedoc extraction behavior:
 
 - Searchlight stays the engine
 - parsedoc stays the extraction layer
 - the example shows the integration boundary clearly
 
 That is exactly what we want before publishing the package more broadly.
+
+This document predates the later strict-parity decision and should not be read
+as proof that the package already matches Orama's plugin shape.

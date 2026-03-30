@@ -1,24 +1,26 @@
-# searchlight_parsedoc
+# Searchlight Parsedoc
 
-`searchlight_parsedoc` is a pure Dart companion package for `searchlight`.
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kingdomseed/searchlight_parsedoc)
+[![Repository](https://img.shields.io/badge/repository-kingdomseed%2Fsearchlight__parsedoc-24292f)](https://github.com/kingdomseed/searchlight_parsedoc)
 
-The current public package import is VM-oriented. It exports `dart:io` file
-helpers alongside the string parsers, so web-safe split exports are not
-implemented yet.
+Searchlight Parsedoc is a pure Dart companion package for Searchlight, the
+independent Dart reimplementation of Orama's in-memory search and indexing
+model. It parses Markdown and HTML into extracted documents and record maps for
+Dart and Flutter apps.
 
-It parses Markdown and HTML into normalized extracted blocks that can then be
-mapped into Searchlight records. The package is intentionally narrow:
+Searchlight Parsedoc is especially useful when your app already has Markdown or
+HTML available as strings or local files, and you want a reusable conversion
+step before indexing that content with Searchlight.
 
-- supported formats: Markdown and HTML
-- string parsing APIs
-- live file-path helpers for Dart VM use
-- default record mappers for Searchlight integration
-- PDF and broader ingestion stay out of scope for v1
+## Status
 
-This repo is still in active development, but the core parsing and mapping flow
-is already implemented and tested.
+`searchlight_parsedoc` is the extraction package: Markdown and HTML parsing,
+parsed document models, and default record mappers for Searchlight.
 
-## Current API
+Today it includes the core parsing and mapping flow needed to turn Markdown or
+HTML into Searchlight-ready maps.
+
+Current API includes:
 
 - `ParsedFormat`
 - `ParsedBlock`
@@ -33,11 +35,7 @@ is already implemented and tested.
 - `SearchlightDocumentRecordMapper`
 - `SearchlightBlockRecordMapper`
 
-## Scope
-
-`searchlight_parsedoc` is not a generic ingestion framework.
-
-V1 intentionally does not include:
+It does not currently include:
 
 - PDF parsing
 - recursive folder walking
@@ -47,17 +45,38 @@ V1 intentionally does not include:
 - Searchlight database creation
 - automatic insertion into a Searchlight index
 
-The package stops at parsed document models and plain record maps.
+## Scope
 
-## Platform notes
+`searchlight_parsedoc` is intentionally focused. It stops at parsed document
+models and opinionated record maps.
 
-- The parsing logic itself is string-first.
-- The current top-level library also exports VM file helpers from `dart:io`.
-- Import `package:searchlight_parsedoc/searchlight_parsedoc.dart` only in
-  Dart/Flutter VM targets for now.
-- Web-safe split exports are not implemented yet in this repo.
+## Platform Support
 
-## Usage
+`searchlight_parsedoc` is a pure Dart package. String parsing is platform
+agnostic, but the current top-level library also exports `dart:io` file
+helpers. Import `package:searchlight_parsedoc/searchlight_parsedoc.dart` in
+Dart or Flutter VM targets for now. Separate web-safe exports are not
+available yet.
+
+## Start Here
+
+- Use the string parsers when your app has already loaded Markdown or HTML
+  content.
+- Use the file parsers in Dart VM code when you want to read local `.md`,
+  `.markdown`, `.html`, or `.htm` files directly.
+- Open [example/README.md](example/README.md) for the Flutter desktop
+  validation app.
+
+## Installation
+
+```bash
+dart pub add searchlight_parsedoc
+
+# or from a Flutter app
+flutter pub add searchlight_parsedoc
+```
+
+## Quick Start
 
 ```dart
 import 'package:searchlight_parsedoc/searchlight_parsedoc.dart';
