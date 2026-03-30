@@ -1,0 +1,26 @@
+import 'package:searchlight_parsedoc/searchlight_parsedoc.dart';
+import 'package:test/test.dart';
+
+void main() {
+  test('parseMarkdownFile reads a live markdown file and preserves sourcePath', () async {
+    final doc = await parseMarkdownFile('test/fixtures/live.md');
+
+    expect(doc.sourcePath, 'test/fixtures/live.md');
+    expect(doc.title, 'Live Fixture');
+    expect(doc.bodyText, contains('First paragraph from a live markdown file.'));
+  });
+
+  test('parseFile infers html extensions', () async {
+    final doc = await parseFile('test/fixtures/live.html');
+
+    expect(doc.format, ParsedFormat.html);
+    expect(doc.title, 'Live HTML Fixture');
+  });
+
+  test('parseFile rejects unsupported extensions', () async {
+    expect(
+      () => parseFile('test/fixtures/unsupported.txt'),
+      throwsA(isA<UnsupportedParsedocFileTypeError>()),
+    );
+  });
+}
