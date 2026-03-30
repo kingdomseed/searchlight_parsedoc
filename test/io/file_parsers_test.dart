@@ -10,16 +10,16 @@ void main() {
     expect(doc.bodyText, contains('First paragraph from a live markdown file.'));
   });
 
-  test('parseFile infers html extensions', () async {
-    final doc = await parseFile('test/fixtures/live.html');
+  test('parseLocalFile infers html extensions', () async {
+    final doc = await parseLocalFile('test/fixtures/live.html');
 
     expect(doc.format, ParsedFormat.html);
     expect(doc.title, 'Live HTML Fixture');
   });
 
-  test('parseFile rejects unsupported extensions', () async {
+  test('parseLocalFile rejects unsupported extensions', () async {
     expect(
-      () => parseFile('test/fixtures/unsupported.txt'),
+      () => parseLocalFile('test/fixtures/unsupported.txt'),
       throwsA(isA<UnsupportedParsedocFileTypeError>()),
     );
   });

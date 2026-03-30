@@ -1,6 +1,7 @@
 import '../searchlight_parsedoc_base.dart';
 
 typedef PopulateFnContext = Map<String, Object?>;
+typedef DefaultSchemaElement = Map<String, Object?>;
 
 class NodeContent {
   const NodeContent({

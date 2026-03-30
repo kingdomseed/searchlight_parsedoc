@@ -13,7 +13,7 @@ class UnsupportedParsedocFileTypeError extends Error {
   }
 }
 
-Future<ParsedDocument> parseFile(
+Future<ParsedDocument> parseLocalFile(
   String path, {
   ParseOptions options = const ParseOptions(),
 }) async {

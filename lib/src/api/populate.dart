@@ -1,4 +1,7 @@
 import 'populate_options.dart';
+import '../runtime/searchlight_population.dart';
+import '../io/populate_from_glob.dart';
+import 'package:searchlight/searchlight.dart';
 
 const defaultHtmlSchema = <String, String>{
   'type': 'string',
@@ -6,23 +9,27 @@ const defaultHtmlSchema = <String, String>{
   'path': 'string',
 };
 
-Future<List<String>> populate(
-  Object db,
+Future<List<DefaultSchemaElement>> parseFile(
   Object data,
   String fileType, {
   PopulateOptions options = const PopulateOptions(),
-}) async {
-  throw UnimplementedError(
-    'populate() is reserved until strict Orama parity implementation lands.',
-  );
+}) {
+  return parseParsedocData(data, fileType, options: options);
+}
+
+Future<List<String>> populate(
+  Searchlight db,
+  Object data,
+  String fileType, {
+  PopulateOptions options = const PopulateOptions(),
+}) {
+  return populateSearchlight(db, data, fileType, options: options);
 }
 
 Future<void> populateFromGlob(
-  Object db,
+  Searchlight db,
   String pattern, {
   PopulateOptions options = const PopulateOptions(),
-}) async {
-  throw UnimplementedError(
-    'populateFromGlob() is reserved until strict Orama parity implementation lands.',
-  );
+}) {
+  return populateFromGlobFiles(db, pattern, options: options);
 }
