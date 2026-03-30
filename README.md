@@ -10,14 +10,11 @@ Searchlight Parsedoc is a pure Dart reimplementation of Orama's Parsedoc
 helper package shape for Searchlight, the independent Dart reimplementation of
 Orama's in-memory search and indexing model.
 
-Package links:
+Companion core package:
 
-- `searchlight` on pub.dev: <https://pub.dev/packages/searchlight>
-- `searchlight` on GitHub: <https://github.com/kingdomseed/searchlight>
-- `searchlight_parsedoc` on pub.dev:
-  <https://pub.dev/packages/searchlight_parsedoc>
-- `searchlight_parsedoc` on GitHub:
-  <https://github.com/kingdomseed/searchlight_parsedoc>
+- [`searchlight`](https://pub.dev/packages/searchlight) provides the core
+  indexing, querying, persistence, and highlighting runtime this package builds
+  on.
 
 It turns HTML and Markdown into flat Searchlight-ready records through the same
 core helper surface Orama exposes:
