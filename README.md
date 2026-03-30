@@ -58,7 +58,7 @@ flutter pub add searchlight_parsedoc
 
 ## Quick Start
 
-Create a Searchlight database that matches the default searchable Parsedoc
+Create a Searchlight database that covers the minimal searchable Parsedoc
 fields:
 
 ```dart
@@ -118,7 +118,7 @@ import 'package:searchlight_parsedoc/searchlight_parsedoc.dart';
 
 Future<void> main() async {
   final records = await parseFile(
-    utf8.encode('<p>First</p><p>Second</p>'),
+    utf8.encode('<div><p>First</p><p>Second</p></div>'),
     'html',
   );
 
