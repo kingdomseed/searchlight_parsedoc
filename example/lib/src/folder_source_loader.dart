@@ -1,3 +1,4 @@
+import 'package:searchlight/searchlight.dart';
 import 'package:searchlight_parsedoc_example/src/parsedoc_record.dart';
 import 'package:searchlight_parsedoc_example/src/validation_issue.dart';
 
@@ -7,14 +8,16 @@ import 'folder_source_loader_impl_stub.dart'
 
 final class FolderLoadResult {
   const FolderLoadResult({
+    required this.db,
     required this.rootPath,
-    required this.discoveredMarkdownFiles,
+    required this.discoveredSupportedFiles,
     required this.records,
     required this.issues,
   });
 
+  final Searchlight db;
   final String rootPath;
-  final int discoveredMarkdownFiles;
+  final int discoveredSupportedFiles;
   final List<ParsedocRecord> records;
   final List<ValidationIssue> issues;
 }

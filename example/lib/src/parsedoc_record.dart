@@ -5,6 +5,7 @@ final class ParsedocRecord {
     required this.content,
     required this.displayBody,
     required this.pathLabel,
+    required this.parsedPath,
     required this.group,
     required this.type,
     required this.format,
@@ -16,21 +17,9 @@ final class ParsedocRecord {
   final String content;
   final String displayBody;
   final String pathLabel;
+  final String parsedPath;
   final String group;
   final String type;
   final String format;
   final String? sourcePath;
-
-  Map<String, Object?> toSearchDocument() {
-    return <String, Object?>{
-      'title': title,
-      'content': content,
-      'pathLabel': pathLabel,
-      'group': group,
-      'type': type,
-      'format': format,
-      'sourcePath': sourcePath ?? '',
-      'displayBody': displayBody,
-    };
-  }
 }

@@ -128,10 +128,15 @@ class _ParsedocValidationScreenState extends State<ParsedocValidationScreen> {
 
     try {
       final loadResult = await widget.folderSourceLoader.load(rootPath);
-      final nextSource = _searchIndexService.buildFromRecords(
+      final recordsById = {
+        for (final record in loadResult.records) record.id: record,
+      };
+      final nextSource = LoadedValidationSource(
+        db: loadResult.db,
         records: loadResult.records,
+        recordsById: recordsById,
         label: loadResult.rootPath,
-        discoveredCount: loadResult.discoveredMarkdownFiles,
+        discoveredCount: loadResult.discoveredSupportedFiles,
         issues: loadResult.issues,
       );
       if (!mounted) {
@@ -186,7 +191,7 @@ class _ParsedocValidationScreenState extends State<ParsedocValidationScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Published Searchlight engine + local parsedoc extraction',
+              'Published Searchlight engine + parsedoc parity helpers',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 16),
@@ -199,7 +204,7 @@ class _ParsedocValidationScreenState extends State<ParsedocValidationScreen> {
             TextField(
               controller: _queryController,
               decoration: const InputDecoration(
-                hintText: 'Search parsed markdown...',
+                hintText: 'Search parsed HTML or Markdown...',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -209,7 +214,7 @@ class _ParsedocValidationScreenState extends State<ParsedocValidationScreen> {
             Text(
               source == null
                   ? 'No folder loaded yet.'
-                  : 'Indexed ${source.indexedCount} of ${source.discoveredCount} Markdown files from ${source.label}',
+                  : 'Indexed ${source.indexedCount} extracted records from ${source.discoveredCount} supported files in ${source.label}',
             ),
             if (source != null) ...[
               const SizedBox(height: 8),
@@ -287,7 +292,8 @@ class _SearchResultTile extends StatelessWidget {
       selected: selected,
       onTap: onTap,
       title: Text(record.title),
-      subtitle: Text(record.pathLabel),
+      subtitle: Text('${record.pathLabel}\n${record.parsedPath}'),
+      isThreeLine: true,
       trailing: Text(record.type),
     );
   }
@@ -325,19 +331,29 @@ class _SelectedRecordPanel extends StatelessWidget {
             Text(record.content),
             const SizedBox(height: 12),
             Text(
+              record.parsedPath,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
               record.sourcePath ?? '',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 20),
             Text(
-              'Rendered Markdown Preview',
+              record.format == 'markdown'
+                  ? 'Rendered Markdown Preview'
+                  : 'Source Preview',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
-            MarkdownBody(
-              data: record.displayBody,
-              selectable: true,
-            ),
+            if (record.format == 'markdown')
+              MarkdownBody(
+                data: record.displayBody,
+                selectable: true,
+              )
+            else
+              SelectableText(record.displayBody),
             ],
           ),
         ),

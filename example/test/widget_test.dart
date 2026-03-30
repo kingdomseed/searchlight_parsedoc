@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:searchlight/searchlight.dart';
 import 'package:searchlight_parsedoc_example/main.dart';
 import 'package:searchlight_parsedoc_example/src/folder_source_loader.dart';
 import 'package:searchlight_parsedoc_example/src/parsedoc_record.dart';
@@ -11,7 +12,7 @@ void main() {
 
     expect(find.text('Parsedoc Validation'), findsOneWidget);
     expect(find.text('Choose Folder'), findsOneWidget);
-    expect(find.textContaining('Published Searchlight engine'), findsOneWidget);
+    expect(find.textContaining('parsedoc parity helpers'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
   });
 
@@ -55,8 +56,15 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Selected document'), findsOneWidget);
-    expect(find.text('A focused lance of heat.'), findsWidgets);
-    expect(find.textContaining('/tmp/parsedoc-folder/spells/ember-lance.md'), findsOneWidget);
+    expect(find.text('Ember Lance'), findsWidgets);
+    expect(
+      find.text('/tmp/parsedoc-folder/spells/ember-lance.md'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('/tmp/parsedoc-folder/spells/ember-lance.md/root[0].h1[0]'),
+      findsOneWidget,
+    );
     expect(find.text('Rendered Markdown Preview'), findsOneWidget);
   });
 }
@@ -64,29 +72,53 @@ void main() {
 final class _FakeFolderSourceLoader implements FolderSourceLoader {
   @override
   Future<FolderLoadResult> load(String rootPath) async {
-    return const FolderLoadResult(
+    final db = Searchlight.create(
+      schema: Schema({
+        'type': const TypedField(SchemaType.string),
+        'content': const TypedField(SchemaType.string),
+        'path': const TypedField(SchemaType.string),
+      }),
+    );
+    db
+      ..insert({
+        'id': 'ember-h1',
+        'type': 'h1',
+        'content': 'Ember Lance',
+        'path': '/tmp/parsedoc-folder/spells/ember-lance.md/root[0].h1[0]',
+      })
+      ..insert({
+        'id': 'mist-p',
+        'type': 'p',
+        'content': 'A corridor of cold fog.',
+        'path': '/tmp/parsedoc-folder/rules/mist-veil.md/root[0].p[0]',
+      });
+
+    return FolderLoadResult(
+      db: db,
       rootPath: '/tmp/parsedoc-folder',
-      discoveredMarkdownFiles: 2,
-      records: [
+      discoveredSupportedFiles: 2,
+      records: const [
         ParsedocRecord(
-          id: 'spells/ember-lance.md',
+          id: 'ember-h1',
           title: 'Ember Lance',
-          content: 'A focused lance of heat.',
+          content: 'Ember Lance',
           displayBody: '# Ember Lance\n\nA focused lance of heat.',
           pathLabel: 'spells/ember-lance.md',
+          parsedPath: '/tmp/parsedoc-folder/spells/ember-lance.md/root[0].h1[0]',
           group: 'spells',
-          type: 'spell',
+          type: 'h1',
           format: 'markdown',
           sourcePath: '/tmp/parsedoc-folder/spells/ember-lance.md',
         ),
         ParsedocRecord(
-          id: 'rules/mist-veil.md',
-          title: 'Mist Veil',
+          id: 'mist-p',
+          title: 'A corridor of cold fog.',
           content: 'A corridor of cold fog.',
           displayBody: '# Mist Veil\n\nA corridor of cold fog.',
           pathLabel: 'rules/mist-veil.md',
+          parsedPath: '/tmp/parsedoc-folder/rules/mist-veil.md/root[0].p[0]',
           group: 'rules',
-          type: 'rule',
+          type: 'p',
           format: 'markdown',
           sourcePath: '/tmp/parsedoc-folder/rules/mist-veil.md',
         ),

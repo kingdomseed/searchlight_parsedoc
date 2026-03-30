@@ -1,47 +1,70 @@
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
+import 'package:searchlight/searchlight.dart';
 import 'package:searchlight_parsedoc/searchlight_parsedoc.dart';
 import 'package:searchlight_parsedoc_example/src/parsedoc_record.dart';
 
 class ParsedocRecordLoader {
   const ParsedocRecordLoader();
 
-  Future<ParsedocRecord> loadMarkdownFile({
+  Future<List<ParsedocRecord>> loadSupportedFile({
     required String filePath,
     required String rootPath,
+    required Searchlight db,
   }) async {
+    final bytes = await File(filePath).readAsBytes();
     final raw = await File(filePath).readAsString();
-    final document = await parseMarkdownFile(filePath);
+    final fileType = _fileTypeFor(filePath);
+    final records = await parseFile(
+      bytes,
+      fileType,
+      options: PopulateOptions(basePath: '$filePath/'),
+    );
+    final ids = await populate(
+      db,
+      bytes,
+      fileType,
+      options: PopulateOptions(basePath: '$filePath/'),
+    );
     final relativePath = p.posix.normalize(
       p.relative(filePath, from: rootPath).replaceAll(r'\', '/'),
     );
 
-    return ParsedocRecord(
-      id: relativePath,
-      title: _titleFor(document, filePath),
-      content: document.bodyText.isEmpty ? document.plainText : document.bodyText,
-      displayBody: raw.trim(),
-      pathLabel: relativePath,
-      group: _groupFor(relativePath),
-      type: _typeFor(relativePath),
-      format: document.format.name,
-      sourcePath: filePath,
-    );
+    return [
+      for (final (index, record) in records.indexed)
+        ParsedocRecord(
+          id: ids[index],
+          title: _titleFor(
+            record['type'] as String? ?? 'node',
+            record['content'] as String? ?? '',
+            relativePath,
+          ),
+          content: record['content'] as String? ?? '',
+          displayBody: raw.trim(),
+          pathLabel: relativePath,
+          parsedPath: record['path'] as String? ?? '',
+          group: _groupFor(relativePath),
+          type: record['type'] as String? ?? _typeFor(relativePath),
+          format: fileType == 'md' ? 'markdown' : 'html',
+          sourcePath: filePath,
+        ),
+    ];
   }
 
-  String _titleFor(ParsedDocument document, String filePath) {
-    final parsedTitle = document.title?.trim();
-    if (parsedTitle != null && parsedTitle.isNotEmpty) {
-      return parsedTitle;
+  String _titleFor(String type, String content, String relativePath) {
+    final normalizedContent = content.trim();
+    if (type == 'h1' && normalizedContent.isNotEmpty) {
+      return normalizedContent;
     }
 
-    final fallbackFileName = p.basenameWithoutExtension(filePath);
-    final words = fallbackFileName
-        .split(RegExp('[-_]'))
-        .where((part) => part.isNotEmpty)
-        .map((part) => '${part[0].toUpperCase()}${part.substring(1)}');
-    return words.join(' ');
+    if (normalizedContent.isNotEmpty) {
+      return normalizedContent.length <= 48
+          ? normalizedContent
+          : '${normalizedContent.substring(0, 45)}...';
+    }
+
+    return '${type.toUpperCase()} ${p.basenameWithoutExtension(relativePath)}';
   }
 
   String _groupFor(String relativePath) {
@@ -61,5 +84,14 @@ class ParsedocRecordLoader {
       return 'rule';
     }
     return 'reference';
+  }
+
+  String _fileTypeFor(String filePath) {
+    final extension = p.extension(filePath).toLowerCase();
+    return switch (extension) {
+      '.md' => 'md',
+      '.html' => 'html',
+      _ => throw UnsupportedParsedocFileTypeError(filePath),
+    };
   }
 }
