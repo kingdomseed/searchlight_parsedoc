@@ -32,13 +32,36 @@ The current package provides:
 The current package does not yet prove strict parity because it does not yet
 match the full Orama Parsedoc package shape or integration model.
 
+## Audited Orama Package Shape
+
+Audit result from `packages/plugin-parsedoc/src/index.ts`:
+
+- Orama Parsedoc is published as `@orama/plugin-parsedoc`
+- the audited source exports helper APIs such as `populate(...)`,
+  `populateFromGlob(...)`, `parseFile(...)`, and `defaultHtmlSchema`
+- the audited source does **not** export a create-time plugin object or plugin
+  factory
+- the audited implementation parses documents and calls `insertMultiple(...)`
+  directly
+
+That means strict parity for Parsedoc currently requires:
+
+- matching the helper-package public contract first
+- not claiming `SearchlightPlugin` integration for Parsedoc unless a later
+  source audit shows Orama changed its implementation
+
+This rule still stands for all other packages:
+
+- if an Orama package is a real plugin in source, the Searchlight equivalent
+  must also be a real `SearchlightPlugin`
+
 ## Implementation Rule
 
 Until parity is reached:
 
 - do not describe Searchlight Parsedoc as "close enough"
-- do not treat helper-only parsing parity as sufficient if Orama's package is
-  plugin-backed
+- do not collapse "published as a plugin package" and "implemented as a
+  create-time plugin" into the same thing; use audited source behavior
 - do not add Searchlight-only ergonomic improvements ahead of matching Orama's
   public contract
 

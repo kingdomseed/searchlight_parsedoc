@@ -14,11 +14,10 @@ step before indexing that content with Searchlight.
 
 ## Status
 
-`searchlight_parsedoc` is the extraction package: Markdown and HTML parsing,
-parsed document models, and default record mappers for Searchlight.
+`searchlight_parsedoc` is currently a parser-first companion package for
+Searchlight. It is not yet at strict Orama Parsedoc parity.
 
-Today it includes the core parsing and mapping flow needed to turn Markdown or
-HTML into Searchlight-ready maps.
+Today it includes parsing and mapping primitives:
 
 Current API includes:
 
@@ -37,6 +36,9 @@ Current API includes:
 
 It does not currently include:
 
+- Orama-style `populate(...)`
+- Orama-style `populateFromGlob(...)`
+- `defaultHtmlSchema`
 - PDF parsing
 - recursive folder walking
 - glob APIs
@@ -48,7 +50,8 @@ It does not currently include:
 ## Scope
 
 `searchlight_parsedoc` is intentionally focused. It stops at parsed document
-models and opinionated record maps.
+models and opinionated record maps today. The next parity phase will add the
+Orama-style population APIs before any Searchlight-specific improvements.
 
 ## Platform Support
 
