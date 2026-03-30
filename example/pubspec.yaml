@@ -34,7 +34,7 @@ dependencies:
   file_selector: ^1.0.3
   flutter_markdown_plus: ^1.0.3
   path: ^1.9.1
-  searchlight: ^0.2.1
+  searchlight: ^0.2.2
   searchlight_parsedoc:
     path: ..
 

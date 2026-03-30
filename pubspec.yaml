@@ -1,6 +1,6 @@
 name: searchlight_parsedoc
 description: HTML and Markdown population helpers for Searchlight with VM file support.
-version: 0.2.1
+version: 0.2.2
 homepage: https://github.com/kingdomseed/searchlight_parsedoc
 repository: https://github.com/kingdomseed/searchlight_parsedoc
 issue_tracker: https://github.com/kingdomseed/searchlight_parsedoc/issues
@@ -20,7 +20,7 @@ dependencies:
   glob: ^2.1.3
   html: ^0.15.6
   markdown: ^7.3.0
-  searchlight: ^0.2.1
+  searchlight: ^0.2.2
 
 dev_dependencies:
   lints: ^6.0.0
