@@ -1,16 +1,21 @@
 # searchlight_parsedoc example
 
-This Flutter desktop example mirrors the base Searchlight example flow, but it
-routes Markdown ingestion through `searchlight_parsedoc`.
+This Flutter example mirrors the base Searchlight example flow, but it routes
+Markdown ingestion through `searchlight_parsedoc`.
 
 ## What it proves
 
-- the app depends on published `searchlight`
-- parsing happens through `searchlight_parsedoc`
+- the app depends on published `searchlight` from pub.dev
+- parsing happens through local `searchlight_parsedoc` from a path dependency
 - indexing and querying happen through Searchlight
 - a user can point the app at a Markdown folder and validate the parsed output
+- parsing or duplicate-ID issues collected during loading are surfaced in the UI
 
 ## Run
+
+Current checked-in target:
+
+- macOS
 
 From the package root:
 
@@ -36,4 +41,4 @@ flutter run -d macos
 
 The example is not using copied Markdown extraction logic. Its folder loader
 parses live files with `parseMarkdownFile(...)`, then indexes those mapped
-records through Searchlight.
+records through published Searchlight.

@@ -211,6 +211,10 @@ class _ParsedocValidationScreenState extends State<ParsedocValidationScreen> {
                   ? 'No folder loaded yet.'
                   : 'Indexed ${source.indexedCount} of ${source.discoveredCount} Markdown files from ${source.label}',
             ),
+            if (source != null) ...[
+              const SizedBox(height: 8),
+              Text('Issues: ${source.issues.length}'),
+            ],
             if (_error != null) ...[
               const SizedBox(height: 16),
               Text(

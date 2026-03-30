@@ -34,6 +34,7 @@ void main() {
 
     expect(find.text('Ember Lance'), findsWidgets);
     expect(find.textContaining('spells/ember-lance.md'), findsWidgets);
+    expect(find.textContaining('Issues: 1'), findsOneWidget);
   });
 
   testWidgets('selecting a result shows parsed detail and markdown preview', (
