@@ -6,9 +6,8 @@
 [![Repository](https://img.shields.io/badge/repository-kingdomseed%2Fsearchlight__parsedoc-24292f)](https://github.com/kingdomseed/searchlight_parsedoc)
 [![Publisher](https://img.shields.io/badge/publisher-jasonholtdigital.com-2b7cff)](https://pub.dev/publishers/jasonholtdigital.com)
 
-Searchlight Parsedoc is a pure Dart reimplementation of Orama's Parsedoc
-helper package shape for Searchlight, the independent Dart reimplementation of
-an in-memory search and indexing model.
+Searchlight Parsedoc is a pure Dart HTML and Markdown helper package for the
+Searchlight ecosystem.
 
 Companion core package:
 
@@ -258,6 +257,6 @@ This package follows Searchlight's architecture split:
 
 ## License And Attribution
 
-Searchlight Parsedoc is an independent pure Dart reimplementation of Orama's
-Parsedoc package shape. It is not affiliated with or endorsed by the Orama
-project.
+Searchlight Parsedoc is an independent pure Dart package for the Searchlight
+ecosystem. It credits Orama Parsedoc for inspiration and package-shape audit
+work, but it is not affiliated with or endorsed by the Orama project.
