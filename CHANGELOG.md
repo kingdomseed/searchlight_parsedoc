@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-04-04
+
+### Changed
+
+- Reduced repeated Orama emphasis in the publish-facing docs while keeping
+  clear attribution.
+- Updated the companion dependency range for `searchlight` `^0.2.3`.
+
 ## [0.2.2] - 2026-03-30
 
 ### Changed
